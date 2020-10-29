@@ -1,3 +1,5 @@
+"use strict";
+//------------------Initialization--------------------
 const gameContainer = document.getElementById("game");
 
 const COLORS = [
@@ -12,7 +14,13 @@ const COLORS = [
   "orange",
   "purple",
 ];
+//--------------------Program-------------------------
+// shuffledColors is an array holding a list of pairs of random paired colors
+let shuffledColors = shuffle(COLORS);
 
+// when the DOM loads
+createDivsForColors(shuffledColors);
+//-------------------Functions------------------------
 // here is a helper function to shuffle an array
 // it returns the same array with values shuffled
 // it is based on an algorithm called Fisher Yates if you want ot research more
@@ -35,9 +43,7 @@ function shuffle(array) {
 
   return array;
 }
-// shuffledColors is an array holding a list of pairs of random paired colors
-let shuffledColors = shuffle(COLORS);
-
+//-------------------------------------------------------
 // this function loops over the array of colors
 // it creates a new div and gives it a class with the value of the color
 // it also adds an event listener for a click for each card
@@ -56,12 +62,11 @@ function createDivsForColors(colorArray) {
     gameContainer.append(newDiv);
   }
 }
-
+//---------------------------------------------------------
 // TODO: Implement this function!
 function handleCardClick(event) {
   // you can use event.target to see which element was clicked
-  console.log("you just clicked", event.target);
+  const card = event.target;
+  const classColor = event.target.getAttribute("class");
+  card.classList.add("." + classColor);
 }
-
-// when the DOM loads
-createDivsForColors(shuffledColors);
