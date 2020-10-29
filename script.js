@@ -1,7 +1,11 @@
 "use strict";
 //------------------Initialization--------------------
 const gameContainer = document.getElementById("game");
-
+const card1 = {};
+const card2 = {};
+let cardCount = 0;
+let matchCount = 0;
+const NSQUARES = 5; //number of squares divided by 2
 const COLORS = [
   "red",
   "blue",
@@ -66,7 +70,54 @@ function createDivsForColors(colorArray) {
 // TODO: Implement this function!
 function handleCardClick(event) {
   // you can use event.target to see which element was clicked
+
   const card = event.target;
   const classColor = event.target.getAttribute("class");
-  card.classList.add("." + classColor);
+
+  if (cardCount === 0) {
+    card1.el = card;
+    card1["el"].removeEventListener("click", handleCardClick);
+    card1.color = card.getAttribute("class");
+
+    card.style.backgroundColor = classColor;
+    cardCount++;
+  } else if (cardCount === 1) {
+    card2.el = card;
+    card2["el"].removeEventListener("click", handleCardClick);
+    card2.color = card.getAttribute("class");
+
+    card.style.backgroundColor = classColor;
+
+    cardCount = 0;
+
+    //check for colors to match
+    if (card1.color === card2.color) {
+      //if colors match deactivate each
+      card1["el"].removeEventListener("click", handleCardClick);
+      card2["el"].removeEventListener("click", handleCardClick);
+      matchCount++;
+      if (matchCount === NSQUARES) gameover();
+    } else {
+      //colors dont match
+      setTimeout(() => {
+        card1["el"].removeAttribute("style");
+        card2["el"].removeAttribute("style");
+        card1["el"].addEventListener("click", handleCardClick);
+        card2["el"].addEventListener("click", handleCardClick);
+      }, 1000);
+    }
+  }
+}
+function gameover() {
+  const h1 = document.querySelector("h1");
+  h1.innerText += "   You Win!";
+
+  const playButton = document.createElement("button");
+  playButton.innerText = "Play Again";
+  playButton.classList.add("btn");
+  h1.append(playButton);
+  playButton.addEventListener("click", () => {
+    console.log("RESTART");
+    location.reload();
+  });
 }
