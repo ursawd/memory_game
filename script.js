@@ -7,18 +7,27 @@ let cardCount = 0;
 let matchCount = 0;
 let guessCount = 0;
 const NSQUARES = 5; //number of squares divided by 2
-const COLORS = [
-  "red",
-  "blue",
-  "green",
-  "orange",
-  "purple",
-  "red",
-  "blue",
-  "green",
-  "orange",
-  "purple",
-];
+// const COLORS = [
+//   "red",
+//   "blue",
+//   "green",
+//   "orange",
+//   "purple",
+//   "red",
+//   "blue",
+//   "green",
+//   "orange",
+//   "purple",
+// ];
+//"Random" colors
+const COLORS = [];
+for (let i = 0; i < 5; i++) {
+  const r = Math.floor(Math.random() * 90 + 10);
+  const g = Math.floor(Math.random() * 90 + 10);
+  const b = Math.floor(Math.random() * 90 + 10);
+  COLORS.push("#" + r + g + b);
+  COLORS.push("#" + r + g + b);
+}
 //--------------------Program-------------------------
 // shuffledColors is an array holding a list of pairs of random paired colors
 let shuffledColors = shuffle(COLORS);
@@ -76,7 +85,7 @@ function createDivsForColors(colorArray) {
 // TODO: Implement this function!
 function handleCardClick(event) {
   // you can use event.target to see which element was clicked
-
+  playSound();
   const card = event.target;
   const classColor = event.target.getAttribute("class");
 
@@ -162,4 +171,8 @@ function lowScore() {
   }
   const lowScoreP = document.getElementById("lowscore");
   lowScoreP.innerText = `The low score is ${lowGuesses} guesses`;
+}
+function playSound() {
+  var audio = new Audio("378223__mars31__beep-horno.wav");
+  audio.play();
 }
