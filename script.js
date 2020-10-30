@@ -6,7 +6,10 @@ const card2 = {};
 let cardCount = 0;
 let matchCount = 0;
 let guessCount = 0;
-const NSQUARES = 5; //number of squares divided by 2
+//todo - create input in HTML to ask for number of squares to create
+//todo   at the start of the game. Until then the number of pairs used
+//todo   in the game can be changed by changing the value of NPAIRS.
+const NPAIRS = 5; //number of pairs ofsquares
 // const COLORS = [
 //   "red",
 //   "blue",
@@ -20,13 +23,14 @@ const NSQUARES = 5; //number of squares divided by 2
 //   "purple",
 // ];
 //"Random" colors
+
 const COLORS = [];
-for (let i = 0; i < 5; i++) {
-  const r = Math.floor(Math.random() * 90 + 10);
-  const g = Math.floor(Math.random() * 90 + 10);
-  const b = Math.floor(Math.random() * 90 + 10);
-  COLORS.push("#" + r + g + b);
-  COLORS.push("#" + r + g + b);
+for (let i = 0; i < NPAIRS; i++) {
+  // 16777215 =fffbase16. toString(16) coverts number to base argument
+  let hexCode = "#" + Math.floor(Math.random() * 16777215).toString(16);
+  hexCode = hexCode.padEnd(7, "0"); //catches hex numbers with fewer than 6 digits
+  COLORS.push(hexCode);
+  COLORS.push(hexCode);
 }
 //--------------------Program-------------------------
 // shuffledColors is an array holding a list of pairs of random paired colors
@@ -112,7 +116,7 @@ function handleCardClick(event) {
       card1["el"].removeEventListener("click", handleCardClick);
       card2["el"].removeEventListener("click", handleCardClick);
       matchCount++;
-      if (matchCount === NSQUARES) gameover();
+      if (matchCount === NPAIRS) gameover();
     } else {
       //colors dont match
       setTimeout(() => {
@@ -172,6 +176,7 @@ function lowScore() {
   const lowScoreP = document.getElementById("lowscore");
   lowScoreP.innerText = `The low score is ${lowGuesses} guesses`;
 }
+//--------------------------------------------------------
 function playSound() {
   var audio = new Audio("378223__mars31__beep-horno.wav");
   audio.play();
