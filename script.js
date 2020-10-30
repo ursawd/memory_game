@@ -5,6 +5,7 @@ const card1 = {};
 const card2 = {};
 let cardCount = 0;
 let matchCount = 0;
+let guessCount = 0;
 const NSQUARES = 5; //number of squares divided by 2
 const COLORS = [
   "red",
@@ -87,6 +88,7 @@ function handleCardClick(event) {
     card.style.backgroundColor = classColor;
     cardCount++;
   } else if (cardCount === 1) {
+    displayGuesses();
     card2.el = card;
     card2["el"].removeEventListener("click", handleCardClick);
     card2.color = card.getAttribute("class");
@@ -113,6 +115,7 @@ function handleCardClick(event) {
     }
   }
 }
+//---------------------------------------------------------
 function gameover() {
   const h1 = document.querySelector("h1");
   h1.innerText += "   You Win!";
@@ -122,10 +125,12 @@ function gameover() {
   h1.append(playButton);
   const sBtn = document.getElementById("start-btn");
   sBtn.style.display = "none";
+  lowScore();
   playButton.addEventListener("click", () => {
     location.reload();
   });
 }
+//---------------------------------------------------------
 function startgame() {
   const divs = document.querySelectorAll("#game div");
   for (let div of divs) {
@@ -133,4 +138,28 @@ function startgame() {
   }
   const sBtn = document.getElementById("start-btn");
   sBtn.style.display = "none";
+}
+//---------------------------------------------------------
+function displayGuesses() {
+  guessCount++;
+  const p = document.getElementById("guesses");
+  p.innerText = `You have made ${guessCount} guesses`;
+}
+//---------------------------------------------------------
+function lowScore() {
+  let lowGuesses;
+  if (localStorage.lowscore === undefined) {
+    localStorage.setItem("lowscore", guessCount);
+    lowGuesses = guessCount;
+  } else {
+    let score = localStorage.getItem("lowscore");
+    if (score < guessCount) {
+      lowGuesses = score;
+    } else {
+      lowGuesses = guessCount;
+      localStorage.setItem("lowscore", guessCount);
+    }
+  }
+  const lowScoreP = document.getElementById("lowscore");
+  lowScoreP.innerText = `The low score is ${lowGuesses} guesses`;
 }
